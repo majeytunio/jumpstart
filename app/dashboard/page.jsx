@@ -1873,6 +1873,20 @@ export default function Dashboard() {
 
       setCurrentUser(session.user);
 
+
+      // 2. Check if application is completed
+      const { data: applicationData, error: applicationError } = await supabase
+        .from('user_applications')
+        .select('completed')
+        .eq('user_id', session.user.id)
+        .single();
+
+      if (applicationError || !applicationData?.completed) {
+        router.push('/application');
+        return;
+      }
+
+
       // 2. Fetch profile
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
