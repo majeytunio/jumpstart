@@ -322,6 +322,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabase';
 import { toast } from 'react-hot-toast';
+import { ArrowRightOnRectangleIcon, HomeIcon } from '@heroicons/react/24/outline';
 
 export default function ApplicationForm() {
   const router = useRouter();
@@ -403,7 +404,36 @@ export default function ApplicationForm() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4 py-8">
       <form onSubmit={handleSubmit} className="w-full max-w-4xl bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md">
-        <h1 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white text-center">Applicant Information</h1>
+
+        <div className="flex justify-between items-center mb-6">
+            {/* Home Button */}
+            <button
+                onClick={() => router.push('/')}
+                className="flex items-center gap-1 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+            >
+                <HomeIcon className="w-5 h-5" />
+                <span className="hidden sm:inline">Home</span>
+            </button>
+
+            {/* Title */}
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-center mx-4">
+                Applicant Information
+            </h1>
+
+            {/* Logout Button */}
+            <button
+                onClick={async () => {
+                await supabase.auth.signOut();
+                router.push('/auth/login');
+                }}
+                className="flex items-center gap-1 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+            >
+                <span className="hidden sm:inline">Logout</span>
+                <ArrowRightOnRectangleIcon className="w-5 h-5" />
+            </button>
+            </div>
+
+        {/* <h1 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white text-center">Applicant Information</h1> */}
         <p className="mb-6 text-gray-600 dark:text-gray-300 text-center">
           We respect your privacy and will use the information you provide to determine whether you are a right fit,
           communicate with you, and provide information about our program.
