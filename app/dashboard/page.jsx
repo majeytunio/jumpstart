@@ -1075,6 +1075,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 import { toast } from 'react-hot-toast';
+import Image from 'next/image';
 
 export default function Dashboard() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -1342,7 +1343,15 @@ export default function Dashboard() {
         {/* Desktop Sidebar */}
         <aside className="w-64 bg-white dark:bg-gray-800 shadow-lg p-6 hidden md:flex flex-col justify-between">
           <div>
-            <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-8">My Dashboard</h2>
+              <Image
+              src={'/ai_idea_logo.png'}
+              width={30}
+              height={30}
+              style={{float: 'left', marginRight: '8px'}}
+              />
+            <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-8">
+              My Dashboard
+            </h2>
             <nav className="space-y-2">
               <SidebarLink 
                 icon={<HomeIcon className="w-5 h-5" />} 

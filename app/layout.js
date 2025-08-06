@@ -20,10 +20,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {/* <link rel="icon" href="/favicon.ico" sizes="any" /> */}
-        {/* You can also use .png if preferred */}
-        <link rel="icon" type="image/png" href="/ai_idea_logo.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/ai_idea_logo.png" />
       </head>
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
