@@ -30,7 +30,7 @@ export default function Home() {
       if (error) {
         console.error('Error fetching profile:', error.message);
         await supabase.auth.signOut();
-        router.push('/auth/login');
+        // router.push('/auth/login');
         setApproved(false);
       } else {
         setUserProfile(data);
@@ -47,7 +47,7 @@ export default function Home() {
         setCurrentUser(session.user);
         await fetchProfile(session.user.id);
       } else {
-        router.push('/auth/login');
+        // router.push('/auth/login');
       }
     };
 
@@ -59,7 +59,7 @@ export default function Home() {
           setCurrentUser(session.user);
           await fetchProfile(session.user.id);
         } else {
-          router.push('/auth/login');
+          // router.push('/auth/login');
         }
       }
     );
