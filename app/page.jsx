@@ -74,11 +74,17 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-white px-6 py-12">
       <section className="max-w-5xl mx-auto text-center">
-        <h1 className="text-5xl font-bold mb-6">
+        {/* <h1 className="text-5xl font-bold mb-6">
           Build SaaS Faster with <span className="text-blue-600">SaaS Jumpstart</span>
+        </h1> */}
+        <h1 className="text-5xl font-bold mb-6">
+          <span className="text-blue-600">SaaS Jumpstart MVP</span> is a private launchpad for identity-driven founders ready to build transformational software and command the world of high-value SaaS with power, precision, and elite support.
         </h1>
         <p className="text-xl mb-10 text-gray-600 dark:text-gray-300">
-          Everything you need to launch your SaaS business – Authentication, Dashboard, Database, AI Tools, and Beautiful UI.
+          Where your MVP becomes the turning point for generational wealth – and the platform for your true authority.
+        </p>
+        <p className="text-xl mb-10 text-gray-600 dark:text-gray-300">
+          SaaS Jumpstart MVP is not a platform—it's a private launch council where identity-driven founders gain direct access to the most trusted, battle-tested SaaS developer teams, with every introduction curated, vetted, and primed for success.
         </p>
         <div className="flex justify-center gap-4">
 
