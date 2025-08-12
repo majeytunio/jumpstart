@@ -8,6 +8,8 @@ import { useRouter } from 'next/navigation';
 
 import { useState, useEffect } from "react";
 
+import Navbar from './components/Navbar';
+
 
 export default function Home() {
   
@@ -72,6 +74,9 @@ export default function Home() {
 
 
   return (
+    <>
+    <Navbar currentUser={currentUser} />
+      
     <main className="min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-white px-6 py-12">
       <section className="max-w-5xl mx-auto text-center">
         {/* <h1 className="text-5xl font-bold mb-6">
@@ -175,6 +180,7 @@ export default function Home() {
         © {new Date().getFullYear()} SaaS Jumpstart. All rights reserved.
       </footer>
     </main>
+    </>
   );
 }
 
