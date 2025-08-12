@@ -2603,6 +2603,7 @@ import {
   XMarkIcon,
   ArrowPathIcon,
   XCircleIcon,
+  ArrowLeftCircleIcon,
 } from '@heroicons/react/24/outline';
 
 import { toast } from 'react-hot-toast';
@@ -2998,6 +2999,15 @@ export default function Dashboard() {
               }} 
               isApproved={isApproved}  
               active={view === 'generate'}
+            />
+            <hr className='dark:text-gray-700 text-gray-200' />
+            <SidebarLink 
+              icon={<ArrowLeftCircleIcon className="w-5 h-5" />} 
+              label="Exit" 
+              onClick={() => {
+                window.location.href = '/';
+              }} 
+              isApproved={isApproved}  
             />
           </nav>
         </div>
