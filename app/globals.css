@@ -1,4 +1,4 @@
-@import "tailwindcss";
+/* @import "tailwindcss";
 
 :root {
   --background: #ffffff;
@@ -23,4 +23,53 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+} */
+
+
+
+
+
+
+/* globals.css */
+
+/* Import Tailwind base styles */
+@import "tailwindcss";
+
+:root {
+  /* Brand colors */
+  --gold: #d4af37;        /* Primary gold */
+  --gold-light: #f0d98c;  /* Accent gold */
+  --black: #0a0a0a;       /* Deep black */
+  --white: #ffffff;
+  --gray: #9ca3af;        /* Neutral gray */
+  --gray-dark: #1a1a1a;
+
+  --danger-color: #ff5100;
+
+  /* UI semantic colors (light mode) */
+  --background: var(--white);
+  --foreground: var(--black);
+  --card-bg: #f9f9f9;
+  --border: #e5e7eb;
+
+  /* Font families (optional) */
+  --font-sans: var(--font-geist-sans, Arial, sans-serif);
+  --font-mono: var(--font-geist-mono, monospace);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* UI semantic colors (dark mode) */
+    --background: var(--black);
+    --foreground: var(--white);
+    --card-bg: var(--gray-dark);
+    --border: #2e2e2e;
+  }
+}
+
+/* Optional default body styling */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
 }
