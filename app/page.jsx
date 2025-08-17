@@ -596,6 +596,7 @@ import { supabase } from "../lib/supabase";
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 export default function Home() {
   const router = useRouter();
@@ -656,7 +657,7 @@ export default function Home() {
 
       <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)] px-6 py-12">
         <section className="max-w-5xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-6">
+          <h1 className="text-3xl font-bold mb-6">
             <span className="text-[var(--gold)]">SaaS Jumpstart MVP</span> is a private launchpad for identity-driven founders ready to build transformational software and command the world of high-value SaaS with power, precision, and elite support.
           </h1>
           <p className="text-xl mb-10 text-[var(--gray)]">
@@ -742,9 +743,11 @@ export default function Home() {
           </div>
         </section>
 
-        <footer className="mt-32 text-center text-[var(--gray)] text-sm">
+        {/* <footer className="mt-32 text-center text-[var(--gray)] text-sm">
           © {new Date().getFullYear()} SaaS Jumpstart. All rights reserved.
-        </footer>
+        </footer> */}
+
+        <Footer currentUser={currentUser} />
       </main>
     </>
   );

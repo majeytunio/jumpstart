@@ -45,6 +45,7 @@ body {
   --gray-dark: #1a1a1a;
 
   --danger-color: #ff5100;
+  --success-color: #00daab;
 
   /* UI semantic colors (light mode) */
   --background: var(--white);
