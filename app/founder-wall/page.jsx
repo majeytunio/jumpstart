@@ -715,10 +715,11 @@ export default function FounderWall() {
           )}
         </section>
 
+        
         {currentUser && (
-          <section className="max-w-6xl mx-auto mt-12 grid md:grid-cols-3 gap-12">
-            {/* Form - 33% */}
-            <div className="col-span-1">
+          <section className="max-w-6xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-12">
+            {/* Form - 33% on desktop, full width on mobile */}
+            <div className="col-span-1 md:col-span-1 col-span-full">
               <div className="bg-[var(--card-bg)] p-6 rounded-xl shadow border border-[var(--border)]">
                 <label className="block text-[var(--foreground)] mb-2 font-medium">
                   Share an Update
@@ -739,8 +740,8 @@ export default function FounderWall() {
               </div>
             </div>
 
-            {/* Progress feed - 66% */}
-            <div className="col-span-2">
+            {/* Progress feed - 66% on desktop, full width on mobile */}
+            <div className="col-span-full md:col-span-2">
               {loading ? (
                 <div className="flex justify-center items-center py-12">
                   <div className="w-8 h-8 border-4 border-[var(--gold)] border-t-transparent rounded-full animate-spin"></div>
@@ -773,6 +774,8 @@ export default function FounderWall() {
             </div>
           </section>
         )}
+
+
 
         {/* <footer className="mt-32 text-center text-[var(--gray)] text-sm">
           © {new Date().getFullYear()} SaaS Jumpstart. All rights reserved.

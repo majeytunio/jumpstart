@@ -516,6 +516,10 @@ export default function Navbar({ currentUser }) {
               )}
             </div>
 
+            <Link href="/payment-and-seat-confirmation" className={getLinkClass("/payment-and-seat-confirmation")}>
+              Payment & Seat
+            </Link>
+
             <button
               onClick={toggleTheme}
               className="p-1 rounded-full text-[var(--gold)] hover:text-[var(--gold-light)]"
@@ -575,10 +579,10 @@ export default function Navbar({ currentUser }) {
             <Link href="/founder-wall" className={getDropdownLinkClass("/founder-wall")}>
               Founder Wall
             </Link>
-
+            
             {/* Founder Connect Mobile Dropdown */}
             <details className="group" open={pathname.startsWith("/founder-connect")}>
-              <summary className="block cursor-pointer text-[var(--gold)] hover:text-[var(--gold-light)]">
+              <summary className="block cursor-pointer px-4 text-[var(--gold)] hover:text-[var(--gold-light)]">
                 Founder Connect ▾
               </summary>
               <div className="ml-4 mt-2 space-y-1">
@@ -596,6 +600,10 @@ export default function Navbar({ currentUser }) {
                 </Link>
               </div>
             </details>
+
+            <Link href="/payment-and-seat-confirmation" className={getDropdownLinkClass("/payment-and-seat-confirmation")}>
+              Payment & Seat
+            </Link>
 
             {currentUser ? (
               <>

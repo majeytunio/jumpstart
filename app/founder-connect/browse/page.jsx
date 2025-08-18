@@ -477,6 +477,15 @@ export default function FounderBrowse() {
         <section className="bg-[var(--gray-dark)] p-5 max-w-6xl mx-auto mt-12 center-items text-center rounded-lg">
           <h1 className="text-2xl font-bold mb-4 text-[var(--foreground)]">Discover Fellow Founders</h1>
           <p className="text-lg mb-6 text-[var(--muted-foreground)]">Join an exclusive network of vetted SaaS founders. Discover meaningful connections, share insights, and accelerate your entrepreneurial journey through premium peer-to-peer networking.</p>
+
+          {!currentUser && (
+            <button
+              onClick={() => router.push("/auth/login")}
+              className="mt-4 bg-[var(--gold)] hover:bg-[var(--gold-light)] text-[var(--black)] px-4 py-2 rounded-md transition"
+            >
+              Login To Discover
+            </button>
+          )}
         </section>
         
         {currentUser && (
