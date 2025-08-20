@@ -551,48 +551,62 @@ export default function PaymentAndSeatConfirmation() {
           </p>
         </section>
 
-        {/* Tier Selection */}
-        <section className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
-          
-          {/* Tier 1 */}
-          <div className="bg-[var(--card-bg)] p-6 rounded-xl border border-[var(--border)] shadow hover:shadow-lg transition">
-            <h3 className="text-xl font-bold mb-2">Tier 1 — SaaS Founder Council</h3>
-            <p className="text-[var(--muted-foreground)] mb-4">Entry Investment: $20,000</p>
-            <ul className="list-disc pl-5 text-sm text-[var(--muted-foreground)] mb-6 space-y-1">
-              <li>8-Week SaaS Founder Identity Installation MP3s</li>
-              <li>Matched with Gold Standard SaaS Developer or Team</li>
-              <li>Private Founder-to-Founder Connection Request feature</li>
-              <li>SaaS Founder Deal Spotlight</li>
-              <li>Access to curated network of vetted SaaS founders and developers</li>
-              <li>Renewal: $10,000 for 12 months continued council membership</li>
-            </ul>
-            <button 
-              onClick={() => setSelectedTier("20K")} 
-              className="w-full bg-[var(--gold)] text-black py-2 rounded-lg font-semibold hover:opacity-90 transition"
-            >
-              Select This Tier
-            </button>
-          </div>
+        {currentUser && (
+          <>
+            {/* Tier Selection */}
+            <section className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
+              
+              {/* Tier 1 */}
+              <div className="bg-[var(--card-bg)] p-6 rounded-xl border border-[var(--border)] shadow hover:shadow-lg transition">
+                <h3 className="text-xl font-bold mb-2">Tier 1 — SaaS Founder Council</h3>
+                <p className="text-[var(--muted-foreground)] mb-4">Entry Investment: $20,000</p>
+                <ul className="list-disc pl-5 text-sm text-[var(--muted-foreground)] mb-6 space-y-1">
+                  <li>8-Week SaaS Founder Identity Installation MP3s</li>
+                  <li>Matched with Gold Standard SaaS Developer or Team</li>
+                  <li>Private Founder-to-Founder Connection Request feature</li>
+                  <li>SaaS Founder Deal Spotlight</li>
+                  <li>Access to curated network of vetted SaaS founders and developers</li>
+                  <li>Renewal: $10,000 for 12 months continued council membership</li>
+                </ul>
+                <button 
+                  onClick={() => setSelectedTier("20K")} 
+                  className="w-full bg-[var(--gold)] text-black py-2 rounded-lg font-semibold hover:opacity-90 transition"
+                >
+                  Select This Tier
+                </button>
+              </div>
 
-          {/* Tier 2 */}
-          <div className="bg-[var(--card-bg)] p-6 rounded-xl border border-[var(--border)] shadow hover:shadow-lg transition">
-            <h3 className="text-xl font-bold mb-2">Tier 2 — PE SaaS Founder Council</h3>
-            <p className="text-[var(--muted-foreground)] mb-4">Entry Investment: $50,000</p>
-            <ul className="list-disc pl-5 text-sm text-[var(--muted-foreground)] mb-6 space-y-1">
-              <li>Everything in SaaS Founder Council</li>
-              <li>SaaS Founder Deal Spotlight</li>
-              <li>Matched with Gold Standard SaaS Developer Team</li>
-              <li>Priority Founder-to-Founder introductions with capital partners</li>
-              <li>Renewal: $10,000 for 12 months continued council membership</li>
-            </ul>
-            <button 
-              onClick={() => setSelectedTier("50K")} 
-              className="w-full bg-[var(--gold)] text-black py-2 rounded-lg font-semibold hover:opacity-90 transition"
-            >
-              Select This Tier
-            </button>
-          </div>
-        </section>
+              {/* Tier 2 */}
+              <div className="bg-[var(--card-bg)] p-6 rounded-xl border border-[var(--border)] shadow hover:shadow-lg transition">
+                <h3 className="text-xl font-bold mb-2">Tier 2 — PE SaaS Founder Council</h3>
+                <p className="text-[var(--muted-foreground)] mb-4">Entry Investment: $50,000</p>
+                <ul className="list-disc pl-5 text-sm text-[var(--muted-foreground)] mb-6 space-y-1">
+                  <li>Everything in SaaS Founder Council</li>
+                  <li>SaaS Founder Deal Spotlight</li>
+                  <li>Matched with Gold Standard SaaS Developer Team</li>
+                  <li>Priority Founder-to-Founder introductions with capital partners</li>
+                  <li>Renewal: $10,000 for 12 months continued council membership</li>
+                </ul>
+                <button 
+                  onClick={() => setSelectedTier("50K")} 
+                  className="w-full bg-[var(--gold)] text-black py-2 rounded-lg font-semibold hover:opacity-90 transition"
+                >
+                  Select This Tier
+                </button>
+              </div>
+            </section>
+          </>
+        )}
+        { !currentUser && (
+          <section className="max-w-5xl mx-auto bg-[var(--card-secondary-bg)] p-6 rounded-xl border border-[var(--border)] shadow">
+            <button
+                onClick={() => window.location.href = '/auth/login'}
+                className="w-full bg-[var(--gold)] text-black py-2 rounded-lg font-semibold hover:opacity-90 transition"
+              >
+                Login to Select Tier
+              </button>
+          </section>
+        )}
 
         {/* Payment Instructions */}
         {selectedTier && (
