@@ -656,7 +656,7 @@ export default function Home() {
       <Navbar currentUser={currentUser} />
 
       <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)] px-6 py-12">
-        <section className="max-w-5xl mx-auto text-center">
+        {/* <section className="max-w-5xl mx-auto text-center">
           <h1 className="text-3xl font-bold mb-6">
             <span className="text-[var(--gold)]">SaaS Jumpstart MVP</span> is a private launchpad for identity-driven founders ready to build transformational software and command the world of high-value SaaS with power, precision, and elite support.
           </h1>
@@ -689,6 +689,72 @@ export default function Home() {
             >
               See Features
             </a>
+          </div>
+        </section> */}
+
+        <section 
+        className="max-w-6xl mx-auto mt-24 flex flex-col md:flex-row gap-8
+        bg-[var(--card-bg)] rounded-xl p-6 shadow-sm border border-[var(--border)]
+        "
+        >
+
+          
+          
+
+          <div className="md:w-1/3">
+            <Image
+              alt="The Book Cover"
+              src={'/the_creators_code.jpeg'}
+              width={400}
+              height={600}
+              className="w-full h-auto object-contain rounded-xl"
+            />
+            <h3 className="text-xl font-semibold mb-2 text-[var(--gold)] text-center mt-4">From Vision to SaaS Certainty</h3>
+            <p className="text-[var(--gray)] text-center mt-2">
+            
+              The Creator's Code unlocks the playbook. SaaS Jumpstart MVP installs it with AI into your business transforming any good company into a SaaS-enabled, AI-Powered compounding machine with predictable enterprise value growth.
+
+            </p>
+          </div>
+          {/* <div className="md:w-2/3">
+          </div> */}
+         
+          <div className="md:w-2/3">
+            
+            <h1 className="text-3xl font-bold mb-6">
+            <span className="text-[var(--gold)]">SaaS Jumpstart MVP</span> is a private launchpad for identity-driven founders ready to build transformational software and command the world of high-value SaaS with power, precision, and elite support.
+            </h1>
+            <p className="text-xl mb-10 text-[var(--gray)]">
+              Where your MVP becomes the turning point for generational wealth – and the platform for your true authority.
+            </p>
+            <p className="text-xl mb-10 text-[var(--gray)]">
+              SaaS Jumpstart MVP is not a platform—it's a private launch council where identity-driven founders gain direct access to the most trusted, battle-tested SaaS developer teams, with every introduction curated, vetted, and primed for success.
+            </p>
+            <div className="flex justify-center gap-4">
+              {currentUser ? (
+                <a
+                  href="/dashboard"
+                  className="bg-[var(--gold)] hover:bg-[var(--gold-light)] text-[var(--black)] px-6 py-3 rounded-md text-lg font-semibold transition"
+                >
+                  Go to Dashboard
+                </a>
+              ) : (
+                <a
+                  href="/auth/login"
+                  className="bg-[var(--gold)] hover:bg-[var(--gold-light)] text-[var(--black)] px-6 py-3 rounded-md text-lg font-semibold transition"
+                >
+                  Get Started
+                </a>
+              )}
+
+              <a
+                href="#features"
+                className="border border-[var(--gold)] text-[var(--gold)] hover:bg-[var(--gold)] hover:text-[var(--black)] px-6 py-3 rounded-md text-lg font-semibold transition"
+              >
+                See Features
+              </a>
+            </div>
+
           </div>
         </section>
 
