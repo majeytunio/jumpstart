@@ -467,8 +467,8 @@ export default function Navbar({ currentUser }) {
           <Link href="/" className="flex items-center">
             <img
               src="/ai_idea_logo.png"
-              width={35}
-              height={35}
+              width={60}
+              height={60}
               alt="Logo"
               className="mr-2"
             />

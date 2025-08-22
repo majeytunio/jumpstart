@@ -699,10 +699,16 @@ export default function FounderWall() {
       <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)] px-6 py-12">
         <section className="max-w-6xl mx-auto mt-12 center-items text-center">
           <h1 className="text-4xl font-bold mb-4 text-[var(--foreground)]">
-            Share Your SaaS Journey
+            {/* Share Your SaaS Journey */}
+            Where SaaS Founders Build Legacy Together
           </h1>
           <p className="text-lg mb-6 text-[var(--muted-foreground)]">
-            Connect with fellow entrepreneurs, celebrate wins, and track your progress as you build your MVP.
+            {/* Connect with fellow entrepreneurs, celebrate wins, and track your progress as you build your MVP. */}
+            Post your wins, share your challenges, and connect with vetted founders turning ideas into SaaS empires.
+          </p>
+          <p className="text-lg mb-6 text-[var(--muted-foreground)]">
+            {/* Connect with fellow entrepreneurs, celebrate wins, and track your progress as you build your MVP. */}
+            Join an exclusive network of vetted SaaS founders. Every member is a proven builder, ensuring you connect with peers who speak your language. Share insights, post wins, and get real-time feedback on your challenges. Collaborate, cross-pollinate ideas, and accelerate your entrepreneurial journey through premium peer-to-peer networking. This isn’t just a wall—it’s where SaaS Founders build legacy together.
           </p>
 
           {!currentUser && (
