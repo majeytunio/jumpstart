@@ -144,21 +144,28 @@ export default function FounderConnect() {
       <Navbar currentUser={currentUser} />
 
       <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)] px-6 py-12">
-        <section className="max-w-6xl mx-auto mt-12 center-items text-center">
+        <section className="max-w-3xl mx-auto mt-12 center-items text-center">
           <h1 className="text-4xl font-bold mb-4 text-[var(--foreground)]">
-            Connect with EliteSaaS Founders
+            {/* Connect with EliteSaaS Founders */}
+            See the Deals Before the Market Does.
           </h1>
           <p className="text-lg mb-6 text-[var(--muted-foreground)]">
-            Join an exclusive network of vetted SaaS founders. Discover meaningful connections, share insights, and accelerate your entrepreneurial journey through premium peer-to-peer networking.
+            {/* Join an exclusive network of vetted SaaS founders. Discover meaningful connections, share insights, and accelerate your entrepreneurial journey through premium peer-to-peer networking. */}
+            Lower–mid market deal makers don’t chase auctions—they engineer unfair advantages. The real driver isn’t just closing deals; it’s securing exclusive proprietary deal flow competitors will never touch.
+          </p>
+          <p className="text-lg mb-6 text-[var(--muted-foreground)]">
+            By connecting with EliteSaaS Founders inside SaaS Jumpstart MVP, you unlock off-market SaaS AI opportunities and insights that shift you from competing in crowded auctions… to owning the deal before it ever hits the table.
           </p>
         </section>
         
-        <section className="bg-[var(--gray-dark)] p-10 max-w-2xl mx-auto mt-12 center-items text-center rounded-lg">
+        <section className="bg-[var(--gray-dark)] p-10 max-w-3xl mx-auto mt-12 center-items text-center rounded-lg">
           <h1 className="text-4xl font-bold mb-4 text-[var(--foreground)]">
-            Discover Fellow Founders
+            {/* Discover Fellow Founders */}
+            Don’t Miss the SaaS Wave — Own It.
           </h1>
           <p className="text-lg mb-6 text-[var(--muted-foreground)]">
-            Join an exclusive network of vetted SaaS founders. Discover meaningful connections, share insights, and accelerate your entrepreneurial journey through premium peer-to-peer networking.
+            {/* Join an exclusive network of vetted SaaS founders. Discover meaningful connections, share insights, and accelerate your entrepreneurial journey through premium peer-to-peer networking. */}
+            The greatest risk isn’t paying too much at auction—it’s missing the SaaS AI wave entirely. By connecting with EliteSaaS Founders, you secure proprietary deal flow that compounds long-term value while others are still chasing bids. SaaS isn’t a passing trend; it’s the infrastructure of the future. The question is whether you’ll own the opportunity—or watch it pass you by.
           </p>
 
           {!currentUser && (
