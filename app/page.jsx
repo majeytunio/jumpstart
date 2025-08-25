@@ -808,6 +808,28 @@ export default function Home() {
             )}
           </div>
         </section>
+        
+        
+        <section className="max-w-4xl mx-auto mt-24 text-center">
+          <h2 className="text-3xl font-semibold mb-6 text-[var(--gold)]">
+            Important Membership Information
+          </h2>
+
+          <p className="text-[var(--gray)] text-lg">
+            Review the official requirements and disclosures before becoming a SaaS Jumpstart member.
+          </p>
+
+          <div className="mt-10">
+            <a
+              href="/MembershipRequierments.pdf"
+              download
+              className="bg-[var(--gold)] hover:bg-[var(--gold-light)] text-[var(--black)] px-6 py-3 rounded-md text-lg font-semibold shadow-md transition"
+            >
+              Download Membership Document
+            </a>
+          </div>
+        </section>
+
 
         {/* <footer className="mt-32 text-center text-[var(--gray)] text-sm">
           © {new Date().getFullYear()} SaaS Jumpstart. All rights reserved.
