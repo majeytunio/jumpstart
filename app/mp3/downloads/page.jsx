@@ -316,73 +316,55 @@ export default function MP3Downloads() {
       <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)] px-6">
         <section className="bg-[var(--gray-dark)] p-5 max-w-6xl mx-auto mt-12 text-center rounded-lg">
           <h1 className="text-2xl font-bold mb-4">🎵 MP3 Downloads</h1>
-          <p className="text-lg mb-6 text-[var(--muted-foreground)]">
+          {/* <p className="text-lg mb-6 text-[var(--muted-foreground)]">
             Upload and download MP3 files with ease.
-          </p>
+          </p> */}
         </section>
 
-        {currentUser && (
-          <section className="max-w-3xl mx-auto py-6">
-            <form onSubmit={handleUpload} className="space-y-4">
-              <input
-                type="text"
-                placeholder="Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="w-full p-2 border rounded-md"
-              />
-              <textarea
-                placeholder="Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full p-2 border rounded-md"
-              />
-              <input
-                type="file"
-                accept="audio/mp3"
-                onChange={(e) => setFile(e.target.files[0])}
-              />
-              <button
-                type="submit"
-                disabled={uploading}
-                className="bg-[var(--gold)] px-4 py-2 rounded-md text-black hover:opacity-90"
-              >
-                {uploading ? "Uploading..." : "Upload MP3"}
-              </button>
-            </form>
+        {currentUser ? (
+          <section className="max-w-6xl mx-auto py-10">
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <div className="w-8 h-8 border-4 border-[var(--gold)] border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            ) : mp3Files.length === 0 ? (
+              <p className="text-center text-[var(--muted-foreground)] mt-8">
+                No MP3 files uploaded yet.
+              </p>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-6">
+                {mp3Files.map((mp3) => (
+                  <div key={mp3.id} className="bg-[var(--card-bg)] p-6 rounded-xl border">
+                    <h2 className="text-lg font-semibold">{mp3.title}</h2>
+                    <p className="text-sm text-[var(--muted-foreground)]">{mp3.description}</p>
+                    <audio controls className="w-full mt-3">
+                      <source src={mp3.file_url} type="audio/mp3" />
+                    </audio>
+                    <a
+                      href={mp3.file_url}
+                      download
+                      className="inline-block mt-4 bg-[var(--gold)] px-4 py-2 rounded-md text-black hover:opacity-90"
+                    >
+                      ⬇ Download
+                    </a>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        ) : (
+          <section className="max-w-6xl mx-auto py-10 flex flex-col items-center">
+            <p className="text-center text-[var(--muted-foreground)] mb-6">
+              Please login to get list of MP3 files.
+            </p>
+            <button
+              className="bg-[var(--gold)] px-6 py-3 rounded-md text-black font-semibold hover:opacity-90"
+              onClick={() => supabase.auth.signInWithOAuth({ provider: "google" })}
+            >
+              Login for MP3 List
+            </button>
           </section>
         )}
-
-        <section className="max-w-6xl mx-auto py-10">
-          {loading ? (
-            <div className="flex justify-center py-12">
-              <div className="w-8 h-8 border-4 border-[var(--gold)] border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          ) : mp3Files.length === 0 ? (
-            <p className="text-center text-[var(--muted-foreground)] mt-8">
-              No MP3 files uploaded yet.
-            </p>
-          ) : (
-            <div className="grid md:grid-cols-2 gap-6">
-              {mp3Files.map((mp3) => (
-                <div key={mp3.id} className="bg-[var(--card-bg)] p-6 rounded-xl border">
-                  <h2 className="text-lg font-semibold">{mp3.title}</h2>
-                  <p className="text-sm text-[var(--muted-foreground)]">{mp3.description}</p>
-                  <audio controls className="w-full mt-3">
-                    <source src={mp3.file_url} type="audio/mp3" />
-                  </audio>
-                  <a
-                    href={mp3.file_url}
-                    download
-                    className="inline-block mt-4 bg-[var(--gold)] px-4 py-2 rounded-md text-black hover:opacity-90"
-                  >
-                    ⬇ Download
-                  </a>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
       </main>
       <Footer currentUser={currentUser} />
     </>

@@ -413,6 +413,8 @@ export default function Navbar({ currentUser }) {
   const pathname = usePathname(); // ✅ get current route
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFounderDropdownOpen, setIsFounderDropdownOpen] = useState(false);
+  const [isMediaDropdownOpen, setIsMediaDropdownOpen] = useState(false);
+
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
@@ -516,6 +518,29 @@ export default function Navbar({ currentUser }) {
               )}
             </div>
 
+            <div className="relative">
+              <button
+                onClick={() => setIsMediaDropdownOpen(!isMediaDropdownOpen)}
+                className={`px-3 py-3 rounded-md text-sm font-semibold transition ${
+                  pathname.startsWith("/mp3") || pathname.startsWith("/mp4")
+                    ? "bg-[var(--gold-light)] text-[var(--black)]"
+                    : "bg-[var(--gold)] text-[var(--black)] hover:bg-[var(--gold-light)]"
+                }`}
+              >
+                Media ▾
+              </button>
+              {isMediaDropdownOpen && (
+                <div className="absolute mt-2 w-48 rounded-md shadow-lg bg-[var(--background)] border border-[var(--border)]">
+                  <Link href="/mp3/downloads" className={getDropdownLinkClass("/mp3/downloads")}>
+                    MP3
+                  </Link>
+                  <Link href="/mp4/listings" className={getDropdownLinkClass("/mp4/listings")}>
+                    MP4
+                  </Link>
+                </div>
+              )}
+            </div>
+
             <Link href="/payment-and-seat-confirmation" className={getLinkClass("/payment-and-seat-confirmation")}>
               Payment & Seat
             </Link>
@@ -600,6 +625,22 @@ export default function Navbar({ currentUser }) {
                 </Link>
               </div>
             </details>
+
+            {/* Media Mobile Dropdown */}
+            <details className="group">
+              <summary className="block cursor-pointer px-4 text-[var(--gold)] hover:text-[var(--gold-light)]">
+                Media ▾
+              </summary>
+              <div className="ml-4 mt-2 space-y-1">
+                <Link href="/mp3/downloads" className={getDropdownLinkClass("/mp3/downloads")}>
+                  MP3
+                </Link>
+                <Link href="/mp4/listings" className={getDropdownLinkClass("/mp4/listings")}>
+                  MP4
+                </Link>
+              </div>
+            </details>
+
 
             <Link href="/payment-and-seat-confirmation" className={getDropdownLinkClass("/payment-and-seat-confirmation")}>
               Payment & Seat
