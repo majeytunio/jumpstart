@@ -142,33 +142,67 @@ export default function MP4Downloads() {
     }
   };
 
-  // Auth + init
+  // // Auth + init
+  // useEffect(() => {
+  //   const init = async () => {
+  //     console.log("🔑 Checking session...");
+  //     const { data: { session } } = await supabase.auth.getSession();
+  //     if (session?.user) {
+  //       console.log("✅ Logged in user:", session.user);
+  //       setCurrentUser(session.user);
+  //       fetchMP4s();
+  //     } else {
+  //       console.log("⚠️ No user session found");
+  //     }
+  //     setLoading(false);
+  //   };
+  //   init();
+
+  //   const { subscription } = supabase.auth.onAuthStateChange((_, session) => {
+  //     if (session?.user) {
+  //       console.log("🔄 Auth state change → logged in:", session.user);
+  //       setCurrentUser(session.user);
+  //       fetchMP4s();
+  //     } else {
+  //       console.log("🔄 Auth state change → logged out");
+  //       setCurrentUser(null);
+  //       setMp4Files([]);
+  //     }
+  //   });
+  //   return () => subscription.unsubscribe();
+  // }, []);
+
+
   useEffect(() => {
     const init = async () => {
-      console.log("🔑 Checking session...");
+      console.log('🔑 Checking session...');
       const { data: { session } } = await supabase.auth.getSession();
+
       if (session?.user) {
-        console.log("✅ Logged in user:", session.user);
+        console.log('✅ Logged in user:', session.user);
         setCurrentUser(session.user);
         fetchMP4s();
       } else {
-        console.log("⚠️ No user session found");
+        console.log('⚠️ No user session found');
       }
       setLoading(false);
     };
+
     init();
 
-    const { subscription } = supabase.auth.onAuthStateChange((_, session) => {
+    // Listen to auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
       if (session?.user) {
-        console.log("🔄 Auth state change → logged in:", session.user);
+        console.log('🔄 Auth state change → logged in:', session.user);
         setCurrentUser(session.user);
         fetchMP4s();
       } else {
-        console.log("🔄 Auth state change → logged out");
+        console.log('🔄 Auth state change → logged out');
         setCurrentUser(null);
         setMp4Files([]);
       }
     });
+
     return () => subscription.unsubscribe();
   }, []);
 

@@ -3845,7 +3845,7 @@ export default function Dashboard() {
             />
             <SidebarLink 
               icon={<SparklesIcon className="w-5 h-5" />} 
-              label="AI Idea" 
+              label="Founder Idea Lab" 
               onClick={() => {
                 setView('generate');
                 resetForm();
@@ -4038,14 +4038,18 @@ export default function Dashboard() {
                     <div className="flex justify-between items-center mb-4">
                       <h2 className="text-xl font-semibold text-[var(--foreground)] flex items-center">
                         <SparklesIcon className="w-6 h-6 mr-2 text-[var(--gold)]" />
-                        Your Idea with Our Magic
+                        Your Idea. Your Developer Match. Your SaaS Asset – Inevitable.
                       </h2>
                       <div className="bg-[var(--muted)] px-3 py-1 rounded-full text-sm font-medium text-[var(--gold)]">
                         Credits: {userQuota}
                       </div>
                     </div>
 
-                    <label className="block text-[var(--foreground)] mb-2 font-medium">Describe Your Idea</label>
+                    <label className="block text-[var(--gray)] mb-2">
+                      Describe your SaaS AI Idea in detail — this
+                      is how deals are created:<br />Proprietary visions matched with elite developers, stabilized into SaaS
+                      assets that scale and multiply.
+                    </label>
                     <textarea
                       className="w-full h-40 p-3 border border-[var(--border)] rounded-md bg-[var(--input)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
                       value={ideaText}
