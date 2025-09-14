@@ -517,7 +517,7 @@
 //           © {new Date().getFullYear()} SaaS Jumpstart. All rights reserved.
 //         </footer> */}
 
-//         <Footer currentUser={currentUser} />
+//         <Footer currentUser={currentUser} isApproved={isApproved} />
 
 
 //         {showDeleteModal && (
@@ -696,7 +696,30 @@ export default function FounderRequests() {
   };
 
   // ✅ Auth init
+  const [isApproved, setApproved] = useState(false);
+
   useEffect(() => {
+
+
+    const fetchProfile = async (userId) => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (error) {
+        console.error('Error fetching profile:', error.message);
+        await supabase.auth.signOut();
+        setApproved(false);
+      } else {
+        setApproved(Boolean(data?.verified));
+      }
+
+      setLoading(false);
+    };
+
+    
     const init = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.user) {
@@ -713,6 +736,7 @@ export default function FounderRequests() {
         if (session?.user) {
           setCurrentUser(session.user);
           await fetchRequests(session.user.id);
+          await fetchProfile(session.user.id);
         } else {
           setCurrentUser(null);
           setRequests([]);
@@ -760,7 +784,7 @@ export default function FounderRequests() {
           )}
         </section>
 
-        <Footer currentUser={currentUser} />
+        <Footer currentUser={currentUser} isApproved={isApproved} />
       </main>
     </>
   );

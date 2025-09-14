@@ -105,7 +105,7 @@
 //           )}
 //         </section>
 //       </main>
-//       <Footer currentUser={currentUser} />
+//       <Footer currentUser={currentUser} isApproved={isApproved} />
 //     </>
 //   );
 // }
@@ -172,16 +172,40 @@ export default function MP4Downloads() {
   //   return () => subscription.unsubscribe();
   // }, []);
 
+  const [isApproved, setApproved] = useState(false);
 
   useEffect(() => {
+
+
+    const fetchProfile = async (userId) => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (error) {
+        console.error('Error fetching profile:', error.message);
+        await supabase.auth.signOut();
+        setApproved(false);
+      } else {
+        setApproved(Boolean(data?.verified));
+      }
+
+      setLoading(false);
+    };
+
+
     const init = async () => {
       console.log('🔑 Checking session...');
       const { data: { session } } = await supabase.auth.getSession();
+
 
       if (session?.user) {
         console.log('✅ Logged in user:', session.user);
         setCurrentUser(session.user);
         fetchMP4s();
+        await fetchProfile(session.user.id);
       } else {
         console.log('⚠️ No user session found');
       }
@@ -289,7 +313,7 @@ export default function MP4Downloads() {
         </section>
 
       </main>
-      <Footer currentUser={currentUser} />
+      <Footer currentUser={currentUser} isApproved={isApproved} />
     </>
   );
 }

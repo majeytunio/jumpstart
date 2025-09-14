@@ -597,6 +597,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ChatbotWidget from "./components/ChatBot/ChatbotWidget";
 
 export default function Home() {
   const router = useRouter();
@@ -835,7 +836,10 @@ export default function Home() {
           © {new Date().getFullYear()} SaaS Jumpstart. All rights reserved.
         </footer> */}
 
-        <Footer currentUser={currentUser} />
+        {/* Example: Show a message if the user is approved */}
+        {/* {(currentUser && isApproved) && <ChatbotWidget />} */}
+
+        <Footer currentUser={currentUser} isApproved={isApproved} />
       </main>
     </>
   );

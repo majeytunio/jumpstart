@@ -787,7 +787,7 @@ export default function FounderWall() {
           © {new Date().getFullYear()} SaaS Jumpstart. All rights reserved.
         </footer> */}
 
-        <Footer currentUser={currentUser} />
+        <Footer currentUser={currentUser} isApproved={isApproved} />
 
         {showDeleteModal && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

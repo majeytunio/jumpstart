@@ -170,7 +170,7 @@
 //           )}
 //         </section>
 //       </main>
-//       <Footer currentUser={currentUser} />
+//       <Footer currentUser={currentUser} isApproved={isApproved} />
 //     </>
 //   );
 // }
@@ -191,6 +191,8 @@ export default function MP3Downloads() {
   const [mp3Files, setMp3Files] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+
+  const [isApproved, setApproved] = useState(false);
 
   // form states
   const [title, setTitle] = useState("");
@@ -280,6 +282,30 @@ export default function MP3Downloads() {
 
   // ✅ Auth + init
   useEffect(() => {
+
+
+
+    const fetchProfile = async (userId) => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (error) {
+        console.error('Error fetching profile:', error.message);
+        await supabase.auth.signOut();
+        setApproved(false);
+      } else {
+        setApproved(Boolean(data?.verified));
+      }
+
+      setLoading(false);
+    };
+
+
+
+
     const init = async () => {
       console.log("🔑 Checking session...");
       const { data: { session } } = await supabase.auth.getSession();
@@ -287,6 +313,7 @@ export default function MP3Downloads() {
         console.log("✅ Logged in user:", session.user);
         setCurrentUser(session.user);
         fetchMP3s();
+        await fetchProfile(session.user.id);
       } else {
         console.log("⚠️ No user session found");
       }
@@ -442,7 +469,7 @@ export default function MP3Downloads() {
           </section>
         )}
       </main>
-      <Footer currentUser={currentUser} />
+      <Footer currentUser={currentUser} isApproved={isApproved} />
     </>
   );
 }

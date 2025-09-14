@@ -192,7 +192,7 @@ export default function FounderConnect() {
           © {new Date().getFullYear()} SaaS Jumpstart. All rights reserved.
         </footer> */}
 
-        <Footer currentUser={currentUser} />
+        <Footer currentUser={currentUser} isApproved={isApproved} />
 
 
         {showDeleteModal && (
