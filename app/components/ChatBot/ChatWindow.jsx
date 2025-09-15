@@ -2988,6 +2988,7 @@ const ChatWindow = ({ onClose }) => {
       const { data, error } = await supabase
         .from('messages')
         .select('*')
+        .eq('chatId', userId)
         .order('timestamp', { ascending: true });
 
       if (error) {
@@ -3075,6 +3076,7 @@ const ChatWindow = ({ onClose }) => {
     const userMessage = {
       text: input,
       sender: userId,
+      chatId: userId,
       isBot: false,
       timestamp: new Date().toISOString(),
     };
@@ -3158,6 +3160,7 @@ const ChatWindow = ({ onClose }) => {
       const botMessage = {
         text: botReply,
         sender: 'bot',
+        chatId: userId,
         isBot: true,
         timestamp: new Date().toISOString(),
       };
