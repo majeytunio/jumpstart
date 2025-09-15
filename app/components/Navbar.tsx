@@ -414,6 +414,7 @@ export default function Navbar({ currentUser }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFounderDropdownOpen, setIsFounderDropdownOpen] = useState(false);
   const [isMediaDropdownOpen, setIsMediaDropdownOpen] = useState(false);
+  const [isHelpDropdownOpen, setIsHelpDropdownOpen] = useState(false);
 
   const [theme, setTheme] = useState("light");
 
@@ -541,9 +542,32 @@ export default function Navbar({ currentUser }) {
               )}
             </div>
 
-            <Link href="/payment-and-seat-confirmation" className={getLinkClass("/payment-and-seat-confirmation")}>
+            {/* <Link href="/payment-and-seat-confirmation" className={getLinkClass("/payment-and-seat-confirmation")}>
               Payment & Seat
-            </Link>
+            </Link> */}
+
+            <div className="relative">
+              <button
+                onClick={() => setIsHelpDropdownOpen(!isHelpDropdownOpen)}
+                className={`px-3 py-3 rounded-md text-sm font-semibold transition ${
+                  pathname.startsWith("/payment-and-seat-confirmation") || pathname.startsWith("/360-assessment")
+                    ? "bg-[var(--gold-light)] text-[var(--black)]"
+                    : "bg-[var(--gold)] text-[var(--black)] hover:bg-[var(--gold-light)]"
+                }`}
+              >
+                Help ▾
+              </button>
+              {isHelpDropdownOpen && (
+                <div className="absolute mt-2 w-48 rounded-md shadow-lg bg-[var(--background)] border border-[var(--border)]">
+                  <Link href="/payment-and-seat-confirmation" className={getDropdownLinkClass("/payment-and-seat-confirmation")}>
+                    Payment & Seat
+                  </Link>
+                  <Link href="/360-assessment" className={getDropdownLinkClass("/360-assessment")}>
+                    Stabilizing Your Life
+                  </Link>
+                </div>
+              )}
+            </div>
 
             <button
               onClick={toggleTheme}
@@ -642,9 +666,27 @@ export default function Navbar({ currentUser }) {
             </details>
 
 
-            <Link href="/payment-and-seat-confirmation" className={getDropdownLinkClass("/payment-and-seat-confirmation")}>
+            {/* <Link href="/payment-and-seat-confirmation" className={getDropdownLinkClass("/payment-and-seat-confirmation")}>
               Payment & Seat
-            </Link>
+            </Link> */}
+
+
+            {/* Founder Connect Mobile Dropdown */}
+            <details className="group" open={pathname.startsWith("/payment-and-seat-confirmation") || pathname.startsWith("/360-assessment")}>
+              <summary className="block cursor-pointer px-4 text-[var(--gold)] hover:text-[var(--gold-light)]">
+                Help ▾
+              </summary>
+              <div className="ml-4 mt-2 space-y-1">
+                <Link href="/payment-and-seat-confirmation" className={getDropdownLinkClass("/payment-and-seat-confirmation")}>
+                  Payment & Seat
+                </Link>
+                <Link href="/360-assessment" className={getDropdownLinkClass("/360-assessment")}>
+                  Stabilizing Your Life
+                </Link>
+              </div>
+            </details>
+
+
 
             {currentUser ? (
               <>
