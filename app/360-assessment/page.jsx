@@ -516,8 +516,60 @@ export default function Assessment360() {
     return (
       <>
         <Navbar currentUser={currentUser} />
-        <main className="min-h-screen flex items-center justify-center">
-          <p>Please log in to take the assessment.</p>
+        <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)] px-6 py-12">
+
+          {/* Header */}
+          <section className="max-w-4xl mx-auto text-center mb-12">
+
+            <Image
+              alt="The Book Cover"
+              src={'/360_assessment_logo.png'}
+              width={400}
+              height={600}
+              className="w-50 h-auto object-contain rounded-xl mx-auto mb-12 shadow-lg"
+              />
+
+            <h1 className="text-3xl font-bold mb-4">Stabilizing Your Life. Scaling Your SaaS.</h1>
+            <p className="text-lg text-[var(--muted-foreground)]">
+              With the <span className="font-semibold">Founder Life Balance 360 Assessment, SaaS Jumpstart MVP</span> helps you recalibrate
+              every month—so your health, focus, and identity stay stable while you act on AI-powered
+              predictions and turn ideas into scalable SaaS platforms.
+            </p>
+          </section>
+
+          {/* Credibility Block */}
+          <section className="max-w-5xl mx-auto bg-[var(--card-bg)] p-6 rounded-xl border border-[var(--border)] shadow-sm mb-12">
+            <h2 className="text-xl font-semibold mb-3">The Founder Life Balance 360 Assessment</h2>
+            <p className="text-[var(--muted-foreground)] leading-relaxed">
+              is essential for everyone in SaaS Jumpstart MVP
+              because prediction without readiness is wasted potential. SaaS AI solutions thrive by turning
+              uncertainty into reliable prediction, but if you are unbalanced—financially, physically, socially,
+              intellectually, or in your identity—you won’t have the capacity to act on those insights. Just as
+              private equity firms protect value by eliminating key-person risk, the 360 ensures you eliminate
+              blind spots that could stall your growth. By taking it monthly, you create a rhythm of recalibration
+              that strengthens your health, focus, and execution. In SaaS AI, prediction is the engine, but your
+              readiness is the operating system—and the 360 keeps both aligned so your ideas can scale into
+              lasting platforms.
+            </p>
+          </section>
+
+          
+          <section className="max-w-4xl mx-auto bg-[var(--card-bg)] p-6 rounded-xl border border-[var(--border)] shadow-sm text-center">
+            <h2 className="text-xl font-semibold mb-3">Please login to take the assessment</h2>
+
+            <a
+              href="/auth/login"
+              className="bg-[var(--gold)] hover:bg-[var(--gold-light)] 
+              text-[var(--black)] px-6 py-3 rounded-md 
+              text-lg font-semibold transition
+              mt-12
+              "
+            >
+              Login
+            </a>
+
+          </section>
+          
         </main>
         <Footer />
       </>
@@ -531,7 +583,19 @@ export default function Assessment360() {
       return (
         <section className="max-w-4xl mx-auto bg-[var(--card-bg)] p-6 rounded-xl border border-[var(--border)] shadow-sm text-center">
           <h2 className="text-xl font-semibold mb-3">Assessment Complete for this Month</h2>
-          <p className="text-[var(--muted-foreground)]">You have already completed your assessment for the current month. Please check back next month.</p>
+          <p className="text-[var(--muted-foreground)] mb-10">You have already completed your assessment for the current month. Please check back next month.</p>
+
+          <a
+            href="/360-assessment/results"
+            className="bg-[var(--gold)] hover:bg-[var(--gold-light)] 
+            text-[var(--black)] px-6 py-3 rounded-md 
+            text-lg font-semibold transition
+            mt-12
+            "
+          >
+            See Result
+          </a>
+
         </section>
       );
     }
@@ -541,7 +605,19 @@ export default function Assessment360() {
       return (
         <section className="max-w-4xl mx-auto bg-[var(--card-bg)] p-6 rounded-xl border border-[var(--border)] shadow-sm text-center">
           <h2 className="text-xl font-semibold mb-3">Thank You! Your Assessment Has Been Submitted.</h2>
-          <p className="text-[var(--muted-foreground)]">We are generating your personalized report. Please check back soon!</p>
+          <p className="text-[var(--muted-foreground)] mb-10">We are generating your personalized report. Please check back soon!</p>
+
+          <a
+            href="/360-assessment/results"
+            className="bg-[var(--gold)] hover:bg-[var(--gold-light)] 
+            text-[var(--black)] px-6 py-3 rounded-md 
+            text-lg font-semibold transition
+            mt-12
+            "
+          >
+            See Result
+          </a>
+
         </section>
       );
     }
