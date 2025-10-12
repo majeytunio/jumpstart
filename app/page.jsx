@@ -725,11 +725,14 @@ export default function Home() {
             <h1 className="text-3xl font-bold mb-6">
             <span className="text-[var(--gold)]">SaaS Jumpstart MVP</span> is a private launchpad for identity-driven founders ready to build transformational software and command the world of high-value SaaS with power, precision, and elite support.
             </h1>
-            <p className="text-xl mb-10 text-[var(--gray)]">
-              Where your MVP becomes the turning point for generational wealth – and the platform for your true authority.
+            <p className="text-xl mb-5 text-[var(--gray)]">
+              Where your process becomes proof, your genius becomes software, and your identity becomes the system that scales.
             </p>
             <p className="text-xl mb-10 text-[var(--gray)]">
-              SaaS Jumpstart MVP is not a platform—it's a private launch council where identity-driven founders gain direct access to the most trusted, battle-tested SaaS developer teams, with every introduction curated, vetted, and primed for success.
+              Through SaaS Jumpstart MVP, we help service-based founders codify their genius into software while transforming their identity into that of a true SaaS Founder. 
+              Together, we build the first proof — their process, immortalized into code.
+              This is the evolution of entrepreneurship — where founders transcend physical effort, embody innovation, and architect systems that compound without them.
+              SaaS Jumpstart MVP — where founders transform who they are while codifying what they know.
             </p>
             <div className="flex justify-center gap-4">
               {currentUser ? (
