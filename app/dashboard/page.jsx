@@ -4783,6 +4783,7 @@ export default function Dashboard() {
                   isApproved={isApproved}  
                   active={view === 'account'}
                 />
+                
                 <SidebarLink 
                   icon={<BuildingOffice2Icon className="w-5 h-5" />} 
                   label="Business Info" 
@@ -4922,27 +4923,43 @@ export default function Dashboard() {
                       placeholder="Type your startup or project idea here..."
                     />
 
-                    <button
-                      onClick={handleGenerateIdea}
-                      disabled={generating || !ideaText.trim() || userQuota <= 0}
-                      className="mt-4 bg-[var(--gold)] hover:bg-[var(--gold-light)] text-[var(--black)] px-4 py-2 rounded-md disabled:opacity-50 transition"
-                    >
-                      {generating ? (
-                        <>
-                          <ArrowPathIcon className="w-4 h-4 mr-2 animate-spin inline" />
-                          Generating...
-                        </>
-                      ) : userQuota <= 0 ? (
-                        'No Credits Available'
+                    
+                    {userProfile.user_type === 'founder' ? (
+                      <button
+                        onClick={handleGenerateIdea}
+                        disabled={generating || !ideaText.trim() || userQuota <= 0}
+                        className="mt-4 bg-[var(--gold)] hover:bg-[var(--gold-light)] text-[var(--black)] px-4 py-2 rounded-md disabled:opacity-50 transition"
+                      >
+                        {generating ? (
+                          <>
+                            <ArrowPathIcon className="w-4 h-4 mr-2 animate-spin inline" />
+                            Generating...
+                          </>
+                        ) : userQuota <= 0 ? (
+                          'No Credits Available'
+                        ) : (
+                          'Generate with AI'
+                        )}
+                      </button>
                       ) : (
-                        'Generate with AI'
+                        <>
+                        <button
+                          disabled={true}
+                          className="mt-4 bg-[var(--gold)] hover:bg-[var(--gold-light)] text-[var(--black)] px-4 py-2 rounded-md disabled:opacity-50 transition cursor-not-allowed"
+                        >
+                          Generate with AI
+                        </button>
+                        <p className="mt-2 text-sm text-[var(--destructive)] text-orange-300">
+                          Only users with Founder accounts can generate AI business plans. Please upgrade your account.
+                        </p>
+                        </>
                       )}
-                    </button>
-                    {userQuota <= 0 && (
-                      <p className="mt-2 text-sm text-[var(--destructive)]">
-                        You have no credits remaining. Please purchase more credits to use AI.
-                      </p>
-                    )}
+
+                      {userQuota <= 0 && (
+                        <p className="mt-2 text-sm text-[var(--destructive)]">
+                          You have no credits remaining. Please purchase more credits to use AI.
+                        </p>
+                      )}
                   </div>
                 ) : (
                   <div className="space-y-6">

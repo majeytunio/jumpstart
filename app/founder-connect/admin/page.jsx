@@ -474,13 +474,16 @@ function SidebarLink({ icon, label, active, onClick }) {
 }
 
 // --- MP3 Manager Component ---
-function MP3Manager({ currentUser }) {
+function MP3Manager({ currentUser, userProfile }) {
   const [mp3s, setMp3s] = useState([]);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState(null); // State for custom messages
+
+  const isFounder = userProfile?.user_type === 'founder';
+  const isStudent = userProfile?.user_type === 'student';
 
   if (!supabase) return <p className="text-red-500">Supabase connection failed. Check configuration.</p>;
 
@@ -588,7 +591,7 @@ function MP3Manager({ currentUser }) {
         </div>
       )}
 
-      <div className="mb-8 flex flex-col gap-2 p-8 
+      {/* <div className="mb-8 flex flex-col gap-2 p-8 
       bg-[var(--card-bg)] rounded-xl shadow-sm border border-[var(--border)]
       ">
         <input
@@ -618,7 +621,48 @@ function MP3Manager({ currentUser }) {
         >
           {uploading ? 'Uploading...' : 'Upload MP3'}
         </button>
-      </div>
+      </div> */}
+
+      {isFounder ? (
+        <div className="mb-8 flex flex-col gap-2 p-8 
+        bg-[var(--card-bg)] rounded-xl shadow-sm border border-[var(--border)]
+        ">
+          <input
+            type="text"
+            placeholder="Title"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            className="p-3 border rounded-lg bg-[var(--input-bg)] text-[var(--foreground)] border-[var(--border)] focus:ring-[var(--gold)] focus:border-[var(--gold)] transition"
+          />
+          <input
+            type="text"
+            placeholder="Description"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            className="p-3 border rounded-lg mt-3 bg-[var(--input-bg)] text-[var(--foreground)] border-[var(--border)] focus:ring-[var(--gold)] focus:border-[var(--gold)] transition"
+          />
+          <input
+            type="file"
+            accept=".mp3"
+            onChange={e => setFile(e.target.files[0])}
+            className="p-2 border rounded-lg mt-3 bg-[var(--input-bg)] text-[var(--foreground)] border-[var(--border)] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[var(--gold)] file:text-black hover:file:bg-amber-400 transition"
+          />
+          <button
+            onClick={handleUpload}
+            disabled={uploading}
+            className={`px-4 py-2 rounded-lg text-black mt-4 font-semibold transition ${uploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[var(--gold)] hover:bg-amber-400'}`}
+          >
+            {uploading ? 'Uploading...' : 'Upload MP3'}
+          </button>
+        </div>
+      ) : (
+        <div className="p-4 mb-6 bg-yellow-100 text-yellow-800 rounded-lg border border-yellow-300">
+          {isStudent
+            ? "Please contact the admin to unlock this feature and upgrade your account."
+            : "You currently do not have permission to upload MP3 files."}
+        </div>
+      )}
+
 
       <div className="space-y-4">
         {mp3s.map(mp3 => (
@@ -635,6 +679,7 @@ function MP3Manager({ currentUser }) {
               </div>
               <div className="flex items-center gap-3 shrink-0">
                   <audio controls src={mp3.file_url} className="w-48 sm:w-64 h-10" /> 
+                  {isFounder ? (
                   <button
                       onClick={() => handleDeleteMP3(mp3.id, mp3.file_url)}
                       className="p-2 text-white bg-red-600 hover:bg-red-700 rounded-full transition duration-150 shadow-md"
@@ -642,6 +687,14 @@ function MP3Manager({ currentUser }) {
                   >
                       <XMarkIcon className="w-5 h-5" />
                   </button>
+                  ) : (
+                    <button
+                        className="p-2 text-white bg-red-600 hover:bg-red-700 rounded-full transition duration-150 shadow-md opacity-20 cursor-not-allowed"
+                        aria-label="Delete MP3"
+                    >
+                        <XMarkIcon className="w-5 h-5" />
+                    </button>
+                  )}
               </div>
             </div>
           </div>
@@ -652,13 +705,16 @@ function MP3Manager({ currentUser }) {
 }
 
 // --- MP4 Manager Component ---
-function MP4Manager({ currentUser }) {
+function MP4Manager({ currentUser, userProfile }) {
   const [mp4s, setMp4s] = useState([]);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState(null); // State for custom messages
+
+  const isFounder = userProfile?.user_type === 'founder';
+  const isStudent = userProfile?.user_type === 'student';
   
   if (!supabase) return <p className="text-red-500">Supabase connection failed. Check configuration.</p>;
 
@@ -766,37 +822,45 @@ function MP4Manager({ currentUser }) {
         </div>
       )}
 
-      <div className="mb-8 flex flex-col gap-2 p-8 
-      bg-[var(--card-bg)] rounded-xl shadow-sm border border-[var(--border)]
-      ">
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          className="p-3 border rounded-lg bg-[var(--input-bg)] text-[var(--foreground)] border-[var(--border)] focus:ring-[var(--gold)] focus:border-[var(--gold)] transition"
-        />
-        <input
-          type="text"
-          placeholder="Description"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-          className="p-3 border rounded-lg mt-3 bg-[var(--input-bg)] text-[var(--foreground)] border-[var(--border)] focus:ring-[var(--gold)] focus:border-[var(--gold)] transition"
-        />
-        <input
-          type="file"
-          accept=".mp4"
-          onChange={e => setFile(e.target.files[0])}
-          className="p-2 border rounded-lg mt-3 bg-[var(--input-bg)] text-[var(--foreground)] border-[var(--border)] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[var(--gold)] file:text-black hover:file:bg-amber-400 transition"
-        />
-        <button
-          onClick={handleUpload}
-          disabled={uploading}
-          className={`px-4 py-2 rounded-lg text-black mt-4 font-semibold transition ${uploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[var(--gold)] hover:bg-amber-400'}`}
-        >
-          {uploading ? 'Uploading...' : 'Upload MP4'}
-        </button>
-      </div>
+      {isFounder ? (
+        <div className="mb-8 flex flex-col gap-2 p-8 
+        bg-[var(--card-bg)] rounded-xl shadow-sm border border-[var(--border)]
+        ">
+          <input
+            type="text"
+            placeholder="Title"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            className="p-3 border rounded-lg bg-[var(--input-bg)] text-[var(--foreground)] border-[var(--border)] focus:ring-[var(--gold)] focus:border-[var(--gold)] transition"
+          />
+          <input
+            type="text"
+            placeholder="Description"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            className="p-3 border rounded-lg mt-3 bg-[var(--input-bg)] text-[var(--foreground)] border-[var(--border)] focus:ring-[var(--gold)] focus:border-[var(--gold)] transition"
+          />
+          <input
+            type="file"
+            accept=".mp4"
+            onChange={e => setFile(e.target.files[0])}
+            className="p-2 border rounded-lg mt-3 bg-[var(--input-bg)] text-[var(--foreground)] border-[var(--border)] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[var(--gold)] file:text-black hover:file:bg-amber-400 transition"
+          />
+          <button
+            onClick={handleUpload}
+            disabled={uploading}
+            className={`px-4 py-2 rounded-lg text-black mt-4 font-semibold transition ${uploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[var(--gold)] hover:bg-amber-400'}`}
+          >
+            {uploading ? 'Uploading...' : 'Upload MP4'}
+          </button>
+        </div>
+      ) : (
+        <div className="p-4 mb-6 bg-yellow-100 text-yellow-800 rounded-lg border border-yellow-300">
+          {isStudent
+            ? "Please contact the admin to unlock this feature and upgrade your account."
+            : "You currently do not have permission to upload MP4 files."}
+        </div>
+      )} 
 
       <div className="space-y-4">
         {mp4s.map(mp4 => (
@@ -813,13 +877,23 @@ function MP4Manager({ currentUser }) {
               </div>
               <div className="flex items-center gap-3 shrink-0">
                   <video controls src={mp4.file_url} className="w-48 sm:w-64 h-32 rounded-lg object-cover" />
-                  <button
-                      onClick={() => handleDeleteMP4(mp4.id, mp4.file_url)}
-                      className="p-2 text-white bg-red-600 hover:bg-red-700 rounded-full transition duration-150 shadow-md"
-                      aria-label="Delete MP4"
-                  >
-                      <XMarkIcon className="w-5 h-5" />
-                  </button>
+                  
+                  {isFounder ? (
+                    <button
+                        onClick={() => handleDeleteMP4(mp4.id, mp4.file_url)}
+                        className="p-2 text-white bg-red-600 hover:bg-red-700 rounded-full transition duration-150 shadow-md"
+                        aria-label="Delete MP4"
+                    >
+                        <XMarkIcon className="w-5 h-5" />
+                    </button>
+                    ) : (
+                    <button
+                        className="p-2 text-white bg-red-600 hover:bg-red-700 rounded-full transition duration-150 shadow-md opacity-20 cursor-not-allowed"
+                        aria-label="Delete MP3"
+                    >
+                        <XMarkIcon className="w-5 h-5" />
+                    </button>
+                  )}
               </div>
             </div>
           </div>
@@ -940,10 +1014,10 @@ export default function AdminDashboard() {
       {/* Main Content */}
       <main className="flex-1 p-6 overflow-y-auto">
         {activeSection === 'MP3' && (
-          <MP3Manager currentUser={currentUser} />
+          <MP3Manager currentUser={currentUser} userProfile={userProfile} />
         )}
         {activeSection === 'MP4' && (
-          <MP4Manager currentUser={currentUser} />
+          <MP4Manager currentUser={currentUser} userProfile={userProfile} />
         )}
         {activeSection === 'Home' && (
           <div>

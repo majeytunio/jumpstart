@@ -1527,6 +1527,20 @@ export default function AdminDashboard() {
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
 
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
+  const [editCredits, setEditCredits] = useState(0);
+  const [editUserType, setEditUserType] = useState("user");
+
+
+  const openEditModal = (user) => {
+    setEditingUser(user);
+    setEditCredits(user.credits || 0);
+    setEditUserType(user.user_type || "user");
+    setEditModalOpen(true);
+  };
+
   // --- Fetch initial data ---
   const fetchData = async () => {
     try {
@@ -1549,7 +1563,8 @@ export default function AdminDashboard() {
 
       const { data: usersData, error: usersError } = await supabase
         .from('profiles')
-        .select('id, email, name, created_at, verified')
+        // .select('id, email, name, created_at, verified')
+        .select('*')
         .order('created_at', { ascending: false });
       if (usersError) throw usersError;
 
@@ -1574,6 +1589,10 @@ export default function AdminDashboard() {
     return () => subscription?.unsubscribe();
   }, [retryCount]);
 
+
+
+
+  
   const handleApproveUser = async (userId, approved) => {
     try {
       const { error } = await supabase
@@ -1587,6 +1606,67 @@ export default function AdminDashboard() {
       setError('Failed to update user.');
     }
   };
+
+  // const handleApproveUser = async (userId, approved) => {
+  //   try {
+  //     const updates = approved
+  //       ? {
+  //           verified: true,
+  //           subscription_start: new Date().toISOString(),
+  //           subscription_end: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 6).toISOString(), 
+  //           membership_status: 'active',
+  //         }
+  //       : {
+  //           verified: false,
+  //           membership_status: 'expired'
+  //         };
+
+  //     const { data, error } = await supabase
+  //       .from('profiles')
+  //       .update(updates)
+  //       .eq('id', userId)
+  //       .select()
+  //       .single();
+
+        
+  //       if (error) throw error;
+        
+  //     return data;
+
+  //   } catch (err) {
+  //     console.error("Error approving user:", err);
+  //     return null;
+  //   }
+  // };
+
+
+  const handleRenewSubscription = async (userId) => {
+    try {
+      const sixMonthsLater = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 6);
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .update({
+          subscription_start: new Date().toISOString(),
+          subscription_end: sixMonthsLater.toISOString(),
+          membership_status: "active",
+          verified: true
+        })
+        .eq("id", userId)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      alert("Subscription renewed for 6 months!");
+      setUsers(users.map(u => u.id === userId ? data : u));
+
+    } catch (err) {
+      console.error("Renew error:", err);
+      alert("Failed to renew subscription.");
+    }
+  };
+
 
   if (loading) return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--background)] text-[var(--gold)]">
@@ -1639,7 +1719,7 @@ export default function AdminDashboard() {
       {/* Main Content */}
       <main className="flex-1 p-6 overflow-y-auto">
         {activeSection === 'User Management' && (
-          <UserManagement users={users} handleApproveUser={handleApproveUser} />
+          <UserManagement users={users} handleApproveUser={handleApproveUser} openEditModal={openEditModal} />
         )}
         {activeSection === 'MP3' && (
           <MP3Manager currentUser={currentUser} />
@@ -1653,12 +1733,87 @@ export default function AdminDashboard() {
           </div>
         )}
       </main>
+
+      {editModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl w-96 shadow-xl">
+
+            <h2 className="text-xl font-bold mb-4">Edit User</h2>
+
+            <p className="text-sm mb-3 text-gray-500">Name: {editingUser.name}</p>
+            <p className="text-sm mb-4 text-gray-500">Email: {editingUser.email}</p>
+
+            {/* Credits input */}
+            <label className="block text-sm mb-1">Credits</label>
+            <input
+              type="number"
+              value={editCredits}
+              onChange={(e) => setEditCredits(Number(e.target.value))}
+              className="w-full p-2 rounded border mb-4"
+            />
+
+            {/* User Type Select */}
+            <label className="block text-sm mb-1">User Type</label>
+            <select
+              value={editUserType}
+              onChange={(e) => setEditUserType(e.target.value)}
+              className="w-full p-2 rounded border mb-5 dark:bg-gray-700 dark:text-white"
+            >
+              <option value="user">User</option>
+              <option value="student">Student</option>
+              <option value="founder">Founder</option>
+            </select>
+
+            {/* Renew Subscription */}
+            <button
+              onClick={() => handleRenewSubscription(editingUser.id)}
+              className="w-full bg-blue-600 text-white py-2 rounded-lg mb-4 hover:bg-blue-700"
+            >
+              Renew Subscription (+6 months)
+            </button>
+
+            <div className="flex justify-between mt-4">
+              {/* Save */}
+              <button
+                onClick={async () => {
+                  const { error } = await supabase
+                    .from("profiles")
+                    .update({
+                      credits: editCredits,
+                      user_type: editUserType
+                    })
+                    .eq("id", editingUser.id);
+
+                  if (error) alert("Failed to update user");
+                  else alert("User updated!");
+
+                  setEditModalOpen(false);
+                  fetchData(); // reload table
+                }}
+                className="w-50 me-1 px-4 py-2 bg-green-600 text-white rounded-lg"
+              >
+                Save
+              </button>
+
+              {/* Close */}
+              <button
+                onClick={() => setEditModalOpen(false)}
+                className="w-50 ms-1 px-4 py-2 bg-gray-400 text-white rounded-lg"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
 
 // --- User Management Component ---
-function UserManagement({ users, handleApproveUser }) {
+function UserManagement({ users, handleApproveUser, openEditModal }) {
+
   return (
     <div>
       <h1 className="text-3xl font-bold mb-4">User Management</h1>
@@ -1670,6 +1825,7 @@ function UserManagement({ users, handleApproveUser }) {
                 <th className="px-6 py-3 text-left text-xs font-medium text-[var(--gray)] uppercase">User</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-[var(--gray)] uppercase">Email</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-[var(--gray)] uppercase">Joined</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-[var(--gray)] uppercase">Subscription Start - End</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-[var(--gray)] uppercase">Status</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-[var(--gray)] uppercase">Actions</th>
               </tr>
@@ -1680,8 +1836,25 @@ function UserManagement({ users, handleApproveUser }) {
                   <td className="px-6 py-4">{user.name || 'No name'}</td>
                   <td className="px-6 py-4">{user.email}</td>
                   <td className="px-6 py-4">{new Date(user.created_at).toLocaleDateString()}</td>
+                  <td className="px-6 py-4">
+                    <span style={{'color': '#10ff70'}}>{new Date(user.subscription_start).toLocaleDateString()}</span> - <span style={{'color': '#ff1070'}}>{new Date(user.subscription_end).toLocaleDateString()}</span>
+                  </td>
                   <td className="px-6 py-4">{user.verified ? 'Approved' : 'Pending'}</td>
                   <td className="px-6 py-4 flex gap-2">
+                    <button
+                      onClick={() => openEditModal(user)}
+                      className="p-2 rounded-md bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800"
+                    >
+                      ✏️ Edit
+                    </button>
+                    {/* <button
+                      onClick={() => handleRenewSubscription(user.id)}
+                      className="p-2 rounded-md bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800"
+                      title="Renew 6 months"
+                    >
+                      🔄 Renew
+                    </button> */}
+                    
                     <button onClick={()=>handleApproveUser(user.id,true)} disabled={user.verified} 
                     className={`p-2 rounded-md transition-colors duration-150 ${
                             user.verified 
@@ -1692,6 +1865,8 @@ function UserManagement({ users, handleApproveUser }) {
                           >
                       ✔
                     </button>
+
+
                     <button onClick={()=>handleApproveUser(user.id,false)} disabled={!user.verified} 
                     
                     className={`p-2 rounded-md transition-colors duration-150 ${
