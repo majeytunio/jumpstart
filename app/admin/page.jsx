@@ -1534,6 +1534,15 @@ export default function AdminDashboard() {
   const [editUserType, setEditUserType] = useState("user");
 
 
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const openDetailsModal = (user) => {
+    setSelectedUser(user);
+    setDetailsModalOpen(true);
+  };
+
+
   const openEditModal = (user) => {
     setEditingUser(user);
     setEditCredits(user.credits || 0);
@@ -1719,7 +1728,13 @@ export default function AdminDashboard() {
       {/* Main Content */}
       <main className="flex-1 p-6 overflow-y-auto">
         {activeSection === 'User Management' && (
-          <UserManagement users={users} handleApproveUser={handleApproveUser} openEditModal={openEditModal} />
+          // <UserManagement users={users} handleApproveUser={handleApproveUser} openEditModal={openEditModal} />
+          <UserManagement 
+            users={users} 
+            handleApproveUser={handleApproveUser} 
+            openEditModal={openEditModal}
+            openDetailsModal={openDetailsModal}
+          />
         )}
         {activeSection === 'MP3' && (
           <MP3Manager currentUser={currentUser} />
@@ -1733,6 +1748,41 @@ export default function AdminDashboard() {
           </div>
         )}
       </main>
+
+
+      {detailsModalOpen && selectedUser && (
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50" style={{'background': '#121a21b6'}}>
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl w-[500px] shadow-xl">
+
+            <h2 className="text-xl font-bold mb-4">User Details</h2>
+
+            <div className="space-y-2 text-sm">
+              <p><strong>Name:</strong> {selectedUser.name}</p>
+              <p><strong>Email:</strong> {selectedUser.email}</p>
+              <p><strong>Business Name:</strong> {selectedUser.business_name || '—'}</p>
+              <p><strong>Business Type:</strong> {selectedUser.business_type || '—'}</p>
+              <p><strong>Business Idea:</strong> {selectedUser.business_idea || '—'}</p>
+              <p><strong>Application Type:</strong> {selectedUser.application_type || '—'}</p>
+              <p><strong>User Type:</strong> {selectedUser.user_type}</p>
+              <p><strong>Credits:</strong> {selectedUser.credits}</p>
+              <p><strong>Status:</strong> {selectedUser.verified ? 'Approved' : 'Pending'}</p>
+              <p><strong>Subscription Start:</strong> {new Date(selectedUser.subscription_start).toLocaleDateString()}</p>
+              <p><strong>Subscription End:</strong> {new Date(selectedUser.subscription_end).toLocaleDateString()}</p>
+              <p><strong>Membership:</strong> {selectedUser.membership_status}</p>
+            </div>
+
+            <div className="flex justify-end mt-6">
+              <button 
+                onClick={() => setDetailsModalOpen(false)} 
+                className="px-4 py-2 bg-gray-400 text-white rounded-lg"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
 
       {editModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -1812,11 +1862,11 @@ export default function AdminDashboard() {
 }
 
 // --- User Management Component ---
-function UserManagement({ users, handleApproveUser, openEditModal }) {
+function UserManagement({ users, handleApproveUser, openEditModal, openDetailsModal }) {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-4">User Management</h1>
+      <h1 className="text-3xl font-bold mb-4 ">User Management</h1>
       <div className="bg-[var(--card-bg)] rounded-xl shadow-sm border border-[var(--border)] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-[var(--border)]">
@@ -1833,7 +1883,14 @@ function UserManagement({ users, handleApproveUser, openEditModal }) {
             <tbody className="bg-[var(--card-bg)] divide-y divide-[var(--border)]">
               {users.map(user => (
                 <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
-                  <td className="px-6 py-4">{user.name || 'No name'}</td>
+                  {/* <td className="px-6 py-4">{user.name || 'No name'}</td> */}
+                  <td 
+                    className="px-6 py-4 text-[var(--gold)] cursor-pointer fw-bold hover:underline"
+                    onClick={() => openDetailsModal(user)}
+                  >
+                    {user.name || 'No name'}
+                  </td>
+
                   <td className="px-6 py-4">{user.email}</td>
                   <td className="px-6 py-4">{new Date(user.created_at).toLocaleDateString()}</td>
                   <td className="px-6 py-4">
