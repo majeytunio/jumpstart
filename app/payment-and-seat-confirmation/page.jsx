@@ -566,7 +566,8 @@ export default function PaymentAndSeatConfirmation() {
                   <li>Private Founder-to-Founder Connection Request feature</li>
                   <li>SaaS Founder Deal Spotlight</li>
                   <li>Access to curated network of vetted SaaS founders and developers</li>
-                  <li>Renewal: $10,000 for 12 months continued council membership</li>
+                  {/* <li>Renewal: $10,000 for 12 months continued council membership</li> */}
+                  <li>Renewal: $10,000 for 6 months continued council membership.</li>
                 </ul>
                 <button 
                   onClick={() => setSelectedTier("20K")} 
@@ -585,7 +586,8 @@ export default function PaymentAndSeatConfirmation() {
                   <li>SaaS Founder Deal Spotlight</li>
                   <li>Matched with Gold Standard SaaS Developer Team</li>
                   <li>Priority Founder-to-Founder introductions with capital partners</li>
-                  <li>Renewal: $10,000 for 12 months continued council membership</li>
+                  {/* <li>Renewal: $10,000 for 12 months continued council membership</li> */}
+                  <li>Renewal: $10,000 for 6 months continued council membership.</li>
                 </ul>
                 <button 
                   onClick={() => setSelectedTier("50K")} 
