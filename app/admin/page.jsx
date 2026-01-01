@@ -1261,6 +1261,7 @@ import {
   ArrowPathIcon,
   MicrophoneIcon,
   VideoCameraIcon,
+  DocumentTextIcon,
 } from '@heroicons/react/24/outline';
 
 // --- Sidebar Link Component ---
@@ -1516,6 +1517,309 @@ function MP4Manager({ currentUser }) {
   );
 }
 
+
+// // --- Document Manager Component ---
+// function DocManagement({ currentUser }) {
+//   const [docs, setDocs] = useState([]);
+//   const [file, setFile] = useState(null);
+//   const [title, setTitle] = useState('');
+//   const [description, setDescription] = useState('');
+//   const [uploading, setUploading] = useState(false);
+
+//   // Fetch Documents from the 'doc_files' table
+//   const fetchDocs = async () => {
+//     const { data, error } = await supabase
+//       .from('doc_files')
+//       .select('*')
+//       .order('created_at', { ascending: false });
+    
+//     if (error) console.error('Fetch Docs error:', error);
+//     else setDocs(data);
+//   };
+
+//   useEffect(() => {
+//     if (currentUser) {
+//       fetchDocs();
+//     }
+//   }, [currentUser]);
+
+//   // Handle Upload for PDF, Word, and PowerPoint
+//   const handleUpload = async () => {
+//     if (!file || !title || !description) return alert('All fields required');
+//     setUploading(true);
+    
+//     // Generate a unique filename to prevent overwrites
+//     const fileName = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+
+//     try {
+//       // 1. Upload file to 'doc_files' storage bucket
+//       const { error: uploadError } = await supabase
+//         .storage
+//         .from('doc_files') // Points to your storage bucket
+//         .upload(fileName, file);
+      
+//       if (uploadError) throw uploadError;
+
+//       // 2. Construct the public URL
+//       const fileUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/doc_files/${fileName}`;
+
+//       // 3. Insert metadata into 'doc_files' database table
+//       const { error: dbError } = await supabase
+//         .from('doc_files')
+//         .insert({ 
+//           title, 
+//           description, 
+//           user_id: currentUser.id, 
+//           file_url: fileUrl 
+//         });
+        
+//       if (dbError) throw dbError;
+
+//       // Success: Reset form and refresh list
+//       setTitle('');
+//       setDescription('');
+//       setFile(null);
+//       fetchDocs();
+//       alert('Document uploaded successfully!');
+//     } catch (err) {
+//       console.error('Upload error:', err);
+//       alert(`Upload failed: ${err.message}`);
+//     } finally {
+//       setUploading(false);
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <h1 className="text-2xl font-bold mb-4 text-white">Document Management</h1>
+
+//       <div className="mb-4 flex flex-col gap-2 p-8 
+//       bg-[var(--card-bg)] rounded-xl shadow-sm border border-[var(--border)]
+//       ">
+//         <input
+//           type="text"
+//           placeholder="Document Title"
+//           value={title}
+//           onChange={e => setTitle(e.target.value)}
+//           className="p-2 border rounded bg-transparent text-white"
+//         />
+//         <input
+//           type="text"
+//           placeholder="Description (e.g. Q4 Strategy)"
+//           value={description}
+//           onChange={e => setDescription(e.target.value)}
+//           className="p-2 border rounded mt-3 bg-transparent text-white"
+//         />
+//         <input
+//           type="file"
+//           // Restricted to PDF and common Office docs
+//           accept=".pdf,.doc,.docx,.ppt,.pptx"
+//           onChange={e => setFile(e.target.files[0])}
+//           className="p-2 border rounded mt-3 text-gray-400"
+//         />
+//         <button
+//           onClick={handleUpload}
+//           disabled={uploading}
+//           className="px-4 py-2 bg-[var(--gold)] rounded text-black mt-4 font-bold disabled:opacity-50"
+//         >
+//           {uploading ? 'Uploading...' : 'Upload Document'}
+//         </button>
+//       </div>
+
+//       <div className="space-y-4">
+//         {docs.length === 0 && <p className="text-gray-500">No documents found.</p>}
+//         {docs.map(doc => (
+//           <div key={doc.id}
+//             className="
+//             p-4 flex flex-col gap-1 bg-[var(--card-bg)]
+//             rounded-xl shadow-sm border border-[var(--border)]
+//             "
+//           >
+//             <div className="flex justify-between items-center">
+//               <div>
+//                 <span className="font-medium text-white block">{doc.title}</span>
+//                 <p className="text-sm text-[var(--gray)]">{doc.description}</p>
+//               </div>
+//               <a 
+//                 href={doc.file_url} 
+//                 target="_blank" 
+//                 rel="noreferrer"
+//                 className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-500 transition"
+//               >
+//                 View Document
+//               </a>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
+
+
+// --- Document Manager Component ---
+function DocManagement({ currentUser }) {
+  const [docs, setDocs] = useState([]);
+  const [file, setFile] = useState(null);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [uploading, setUploading] = useState(false);
+
+  // Modal State
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingDoc, setEditingDoc] = useState({ id: '', title: '', description: '' });
+
+  const fetchDocs = async () => {
+    const { data, error } = await supabase
+      .from('doc_files')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) console.error('Fetch Docs error:', error);
+    else setDocs(data);
+  };
+
+  useEffect(() => {
+    if (currentUser) fetchDocs();
+  }, [currentUser]);
+
+  const handleUpload = async () => {
+    if (!file || !title || !description) return alert('All fields required');
+    setUploading(true);
+    const fileName = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+
+    try {
+      const { error: uploadError } = await supabase.storage
+        .from('doc_files')
+        .upload(fileName, file);
+      if (uploadError) throw uploadError;
+
+      const fileUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/doc_files/${fileName}`;
+
+      const { error: dbError } = await supabase
+        .from('doc_files')
+        .insert({ title, description, user_id: currentUser.id, file_url: fileUrl });
+      if (dbError) throw dbError;
+
+      setTitle(''); setDescription(''); setFile(null);
+      fetchDocs();
+    } catch (err) {
+      alert(`Upload failed: ${err.message}`);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDelete = async (doc) => {
+    if (!confirm('Are you sure you want to delete this document?')) return;
+    try {
+      const path = doc.file_url.split('/public/doc_files/')[1];
+      await supabase.storage.from('doc_files').remove([path]);
+      const { error } = await supabase.from('doc_files').delete().eq('id', doc.id);
+      if (error) throw error;
+      fetchDocs();
+    } catch (err) {
+      alert('Delete failed');
+    }
+  };
+
+  // Open Modal and populate data
+  const openEditModal = (doc) => {
+    setEditingDoc({ id: doc.id, title: doc.title, description: doc.description });
+    setIsEditModalOpen(true);
+  };
+
+  // Save changes from Modal
+  const handleUpdate = async () => {
+    const { error } = await supabase
+      .from('doc_files')
+      .update({ title: editingDoc.title, description: editingDoc.description })
+      .eq('id', editingDoc.id);
+
+    if (error) {
+      alert('Update failed');
+    } else {
+      setIsEditModalOpen(false);
+      fetchDocs();
+    }
+  };
+
+  return (
+    <div className="relative">
+      <h1 className="text-2xl font-bold mb-4 text-white">Document Management</h1>
+
+      {/* Upload Form */}
+      <div className="mb-4 flex flex-col gap-2 p-8 bg-[var(--card-bg)] rounded-xl border border-[var(--border)]">
+        <input type="text" placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} className="p-2 border rounded bg-transparent text-white border-[var(--border)]" />
+        <input type="text" placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} className="p-2 border rounded mt-3 bg-transparent text-white border-[var(--border)]" />
+        <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx" onChange={e => setFile(e.target.files[0])} className="p-2 border rounded mt-3 text-gray-400" />
+        <button onClick={handleUpload} disabled={uploading} className="px-4 py-2 bg-[var(--gold)] rounded text-black mt-4 font-bold">
+          {uploading ? 'Uploading...' : 'Upload Document'}
+        </button>
+      </div>
+
+      {/* Documents List */}
+      <div className="space-y-4">
+        {docs.map(doc => (
+          <div key={doc.id} className="p-6 bg-[var(--card-bg)] rounded-xl border border-[var(--border)] flex flex-col gap-3">
+            <div className="flex justify-between items-start">
+              <div className="flex-1">
+                <span className="font-bold text-white text-lg block">{doc.title}</span>
+                <p className="text-sm text-[var(--gray)] mt-1">{doc.description}</p>
+              </div>
+              <div className="flex gap-2">
+                <a href={doc.file_url} target="_blank" rel="noreferrer" className="px-4 py-2 bg-[var(--gold)] rounded text-black text-sm font-bold">View</a>
+                <button onClick={() => openEditModal(doc)} className="px-4 py-2 border border-[var(--gold)] text-[var(--gold)] rounded text-sm">Edit</button>
+                <button onClick={() => handleDelete(doc)} className="px-4 py-2 bg-red-600 text-white rounded text-sm">Delete</button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* --- Edit Dialog Box Modal --- */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+          <div className="bg-[var(--card-bg)] border border-[var(--border)] p-8 rounded-2xl w-full max-w-md shadow-2xl">
+            <h2 className="text-xl font-bold text-white mb-6">Edit Document Details</h2>
+            
+            <label className="text-xs text-[var(--gray)] uppercase font-bold">Title</label>
+            <input 
+              type="text" 
+              value={editingDoc.title} 
+              onChange={e => setEditingDoc({...editingDoc, title: e.target.value})}
+              className="w-full p-2 mt-1 mb-4 border rounded bg-transparent text-white border-[var(--border)]"
+            />
+
+            <label className="text-xs text-[var(--gray)] uppercase font-bold">Description</label>
+            <textarea 
+              rows="3"
+              value={editingDoc.description} 
+              onChange={e => setEditingDoc({...editingDoc, description: e.target.value})}
+              className="w-full p-2 mt-1 mb-6 border rounded bg-transparent text-white border-[var(--border)]"
+            />
+
+            <div className="flex gap-3 justify-end">
+              <button 
+                onClick={() => setIsEditModalOpen(false)}
+                className="px-4 py-2 text-white hover:underline"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleUpdate}
+                className="px-6 py-2 bg-[var(--gold)] text-black rounded-lg font-bold"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 // --- Admin Dashboard Main Component ---
 export default function AdminDashboard() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -1718,6 +2022,7 @@ export default function AdminDashboard() {
             <SidebarLink icon={<UserGroupIcon className="w-5 h-5" />} label="User Management" active={activeSection==='User Management'} onClick={() => setActiveSection('User Management')} />
             <SidebarLink icon={<MicrophoneIcon className="w-5 h-5" />} label="MP3 Management" active={activeSection==='MP3'} onClick={() => setActiveSection('MP3')} />
             <SidebarLink icon={<VideoCameraIcon className="w-5 h-5" />} label="MP4 Management" active={activeSection==='MP4'} onClick={() => setActiveSection('MP4')} />
+            <SidebarLink icon={<DocumentTextIcon className="w-5 h-5" />} label="Document Management" active={activeSection==='DOCS'} onClick={() => setActiveSection('DOCS')} />
           </nav>
         </div>
         <button onClick={async()=>{await supabase.auth.signOut(); setCurrentUser(null);}} className="flex items-center gap-2 text-red-600">
@@ -1741,6 +2046,9 @@ export default function AdminDashboard() {
         )}
         {activeSection === 'MP4' && (
           <MP4Manager currentUser={currentUser} />
+        )}
+        {activeSection === 'DOCS' && (
+          <DocManagement currentUser={currentUser} />
         )}
         {activeSection === 'Home' && (
           <div>

@@ -523,7 +523,7 @@ export default function Navbar({ currentUser }) {
               <button
                 onClick={() => setIsMediaDropdownOpen(!isMediaDropdownOpen)}
                 className={`px-3 py-3 rounded-md text-sm font-semibold transition ${
-                  pathname.startsWith("/mp3") || pathname.startsWith("/mp4")
+                  pathname.startsWith("/mp3") || pathname.startsWith("/mp4") || pathname.startsWith("/docs")
                     ? "bg-[var(--gold-light)] text-[var(--black)]"
                     : "bg-[var(--gold)] text-[var(--black)] hover:bg-[var(--gold-light)]"
                 }`}
@@ -537,6 +537,9 @@ export default function Navbar({ currentUser }) {
                   </Link>
                   <Link href="/mp4/listings" className={getDropdownLinkClass("/mp4/listings")}>
                     MP4
+                  </Link>
+                  <Link href="/docs/listings" className={getDropdownLinkClass("/docs/listings")}>
+                    Pre-Built Assets
                   </Link>
                 </div>
               )}
@@ -661,6 +664,9 @@ export default function Navbar({ currentUser }) {
                 </Link>
                 <Link href="/mp4/listings" className={getDropdownLinkClass("/mp4/listings")}>
                   MP4
+                </Link>
+                <Link href="/docs/listings" className={getDropdownLinkClass("/docs/listings")}>
+                  Pre-Built Assets
                 </Link>
               </div>
             </details>
